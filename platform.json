@@ -48,6 +48,6 @@
       "type": "uploader",
       "optional": true,
       "version": "^1.10000.0"
-    },
+    }
   }
 }

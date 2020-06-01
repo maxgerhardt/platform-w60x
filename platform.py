@@ -17,7 +17,7 @@ from platform import system
 from platformio.managers.platform import PlatformBase
 from platformio.util import get_systype
 
-class Ststm32Platform(PlatformBase):
+class W60xPlatform(PlatformBase):
 
     def configure_default_packages(self, variables, targets):
         board = variables.get("board")
@@ -26,6 +26,7 @@ class Ststm32Platform(PlatformBase):
                 "build.core", "arduino"))
 
         if "arduino" in variables.get("pioframework", []):
+            # todo adapt for coming arduino core
             if build_core == "maple":
                 self.frameworks['arduino']['package'] = "framework-arduinoststm32-maple"
                 self.packages["framework-arduinoststm32-maple"]["optional"] = False
@@ -37,22 +38,6 @@ class Ststm32Platform(PlatformBase):
             "board")).get("upload.protocol") or ""
         if variables.get("upload_protocol", default_protocol) == "dfu":
             self.packages["tool-dfuutil"]["optional"] = False
-
-        if board == "mxchip_az3166":
-            self.frameworks['arduino'][
-                'package'] = "framework-arduinostm32mxchip"
-            self.frameworks['arduino'][
-                'script'] = "builder/frameworks/arduino/mxchip.py"
-            self.packages['toolchain-gccarmnoneeabi']['version'] = "~1.60301.0"
-
-        if "zephyr" in variables.get("pioframework", []):
-            for p in self.packages:
-                if p.startswith("framework-zephyr-") or p in (
-                    "tool-cmake", "tool-dtc", "tool-ninja"):
-                    self.packages[p]["optional"] = False
-            self.packages['toolchain-gccarmnoneeabi']['version'] = "~1.80201.0"
-            if "windows" not in get_systype():
-                self.packages['tool-gperf']['optional'] = False
 
         # configure J-LINK tool
         jlink_conds = [

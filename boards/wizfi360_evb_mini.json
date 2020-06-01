@@ -17,7 +17,7 @@
     "svd_path": "STM32F46_79x.svd"
   },
   "frameworks": [
-	"wm60x-sdk"
+    "wm60x-sdk"
   ],
   "name": "WizFi360-EVB-Mini",
   "upload": {
