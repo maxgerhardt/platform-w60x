@@ -17,9 +17,9 @@
   ],
   "tool-w60x-download": [
     {
-      "sha1": "to-be-done",
+      "sha1": "1c90c18aaddd7a2ca705fed2c320b44f72aa4d5f",
       "system": "*",
-      "url": "<to be filled>.tar.gz",
+      "url": "https://github.com/maxgerhardt/tool-w60x-download/raw/master/tool-w60x-download.zip",
       "version": "1.10000.0"
     }
   ]
