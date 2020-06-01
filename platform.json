@@ -19,7 +19,7 @@
 	"https://raw.githubusercontent.com/maxgerhardt/platform-w60x/master/manifest.json"
   ],
   "frameworks": {
-    "wm600x-sdk": {
+    "wm60x-sdk": {
       "package": "framework-wm60x-sdk",
       "script": "builder/frameworks/wm60x_sdk.py"
     }
