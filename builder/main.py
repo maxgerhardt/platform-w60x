@@ -55,7 +55,15 @@ env.Append(
             action=env.VerboseAction(" ".join([
                 "$OBJCOPY",
                 "-O",
-                "binary",
+                "binary", # following: flags from original Makefile
+                "-S", # strip all 
+                "-g", # strip debug info 
+                "-x", # Remove all non-global symbols  
+                "-X", # Remove any compiler-generated symbols 
+                "-R", ".sbss", # remove section and relocation named ".sbss"
+                "-R", ".bss", # ..
+                "-R" ,".reginfo", 
+                "-R .stack",
                 "$SOURCES",
                 "$TARGET"
             ]), "Building $TARGET"),
@@ -84,6 +92,7 @@ if not env.get("PIOFRAMEWORK"):
 #
 
 target_elf = None
+target_firm = None
 if "nobuild" in COMMAND_LINE_TARGETS:
     target_elf = join("$BUILD_DIR", "${PROGNAME}.elf")
     target_firm = join("$BUILD_DIR", "${PROGNAME}.bin")
@@ -93,6 +102,52 @@ else:
 
 AlwaysBuild(env.Alias("nobuild", target_firm))
 target_buildprog = env.Alias("buildprog", target_firm, target_firm)
+
+#
+# Target: Create compressed images for uplaoding
+#
+path_wm_tool = platform.get_package_dir("tool-w60x-download") or ""
+if path_wm_tool == "": 
+    print("ERROR: Failed to find W60x tools!")
+    sys.exit(-1)
+
+# for 1MB target
+#IMGTYPE=1M
+#UPDADDR=90000
+#RUNADDR=10100
+# for 2MB target
+#IMGTYPE=2M
+#UPDADDR=100000
+#RUNADDR=10100
+
+# detect from the linker script wehter we have a 1MB or 2MB linker script
+is_1mb_version = "1mb.ld" in board.get("build.ldscript", "link_w600_1m.ld")
+
+env.Replace(
+    WM_IMAGE_TOOL= join(path_wm_tool, "wm_tool"),
+    WM_IMAGE_TOOL_FLAGS=[
+        "-b", # source binary
+        "$SOURCE",
+        "-sb", # secboot 
+        "secboot.img", # is in same folder as tool
+        "-fc",
+        "compress",
+        "-it", # image type
+        "1M" if is_1mb_version else "2M",
+        "-ua", # upload address
+        "90000" if is_1mb_version else "100000",
+        "-ra", # run address
+        "10100" if is_1mb_version else "10100",
+        "-df", # generate debug firmware
+        "-o", # output,
+        "$BUILD_DIR/wm_w600"
+    ],
+    WM_IMAGE_CMD="$WM_IMAGE_TOOL $WM_IMAGE_TOOL_FLAGS"
+)
+
+create_images_action = env.VerboseAction("$WM_IMAGE_CMD", "Creating images from $SOURCE")
+AlwaysBuild(env.Alias("imaging", target_firm, create_images_action))
+
 
 #
 # Target: Print binary size
@@ -173,13 +228,13 @@ elif upload_protocol == "serial":
     env.Replace(
         __configure_upload_port=__configure_upload_port,
         UPLOADER=join(
-            '"%s"' % platform.get_package_dir("tool-stm32duino") or "",
-            "stm32flash", "stm32flash"),
+            '"%s"' % platform.get_package_dir("tool-w60x-download") or "",
+            "download.py"),
         UPLOADERFLAGS=[
             "-g", board.get("upload.offset_address", "0x08000000"),
             "-b", "115200", "-w"
         ],
-        UPLOADCMD='$UPLOADER $UPLOADERFLAGS "$SOURCE" "${__configure_upload_port(__env__)}"'
+        UPLOADCMD='$UPLOADER $UPLOADERFLAGS "${__configure_upload_port(__env__)}" "$SOURCE"'
     )
 
     upload_actions = [

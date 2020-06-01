@@ -32,7 +32,7 @@
     "framework-wm60x-sdk": {
       "type": "framework",
       "optional": true,
-      "version": "~1.30200.0"
+      "version": "~1.30400.0"
     },
     "tool-openocd-w60x": {
       "type": "uploader",
@@ -46,7 +46,7 @@
     },
     "tool-w60x-download": {
       "type": "uploader",
-      "optional": true,
+      "optional": false,
       "version": "^1.10000.0"
     }
   }
