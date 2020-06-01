@@ -1,0 +1,36 @@
+{
+  "build": {
+    "cpu": "cortex-m3",
+    "extra_flags": "-DGCC_COMPILE=1 -DWM_W600=1",
+    "f_cpu": "80000000L",
+    "mcu": "w600"
+  },
+  "debug": {
+    "default_tools": [
+      "stlink"
+    ],
+    "jlink_device": "W600",
+    "onboard_tools": [
+      "stlink"
+    ],
+    "openocd_board": "stm32f469discovery",
+    "svd_path": "STM32F46_79x.svd"
+  },
+  "frameworks": [
+	"wm60x-sdk"
+  ],
+  "name": "WizFi360-EVB-Mini",
+  "upload": {
+    "maximum_ram_size": 229376,
+    "maximum_size": 1048576,
+    "protocol": "serial",
+    "protocols": [
+      "jlink",
+      "stlink",
+      "blackmagic",
+      "serial"
+    ]
+  },
+  "url": "http://wizwiki.net/wiki/doku.php/products:wizfi360:board:wizfi360-evb-mini:start",
+  "vendor": "ST"
+}

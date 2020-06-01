@@ -1,0 +1,26 @@
+{
+  "framework-wm60x-sdk": [
+    {
+      "sha1": "to-be-done",
+      "system": "*",
+      "url": "<to be filled>.tar.gz",
+      "version": "1.30200.0"
+    }
+  ], 
+  "tool-openocd-w60x": [
+    {
+      "sha1": "to-be-done",
+      "system": "*",
+      "url": "<to be filled>.tar.gz",
+      "version": "1.1000.0"
+    }
+  ],
+  "tool-w60x-download": [
+    {
+      "sha1": "to-be-done",
+      "system": "*",
+      "url": "<to be filled>.tar.gz",
+      "version": "1.10000.0"
+    }
+  ]
+}

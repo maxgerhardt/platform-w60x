@@ -1,0 +1,53 @@
+{
+  "name": "w60x",
+  "title": "WinnerMicro W60X",
+  "description": "W600 is an embedded Wi-Fi SoC chip which is complying with IEEE802.11b/g/n international standard and which supports multi interface, multi protocol. It can be easily applied to smart appliances, smart home, health care, smart toy, wireless audio & video, industrial and other IoT fields. This SoC integrates Cortex-M3 CPU, Flash, RF Transceiver, CMOS PA, BaseBand. It applies multi interfaces such as SPI, UART, GPIO, I2C, PWM, I2S, 7816. It applies multi encryption and decryption protocol such as PRNG/SHA1/MD5/RC4/DES/3DES/AES/CRC/RSA.",
+  "url": "http://www.winnermicro.com/en/html/1/156/158/497.html",
+  "homepage": "http://platformio.org/platforms/w60x",
+  "license": "Apache-2.0",
+  "engines": {
+    "platformio": "<5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maxgerhardt/platform-w60x"
+  },
+  "version": "6.1.0",
+  "packageRepositories": [
+    "https://dl.bintray.com/platformio/dl-packages/manifest.json",
+    "http://dl.platformio.org/packages/manifest.json",
+	"<to be done: link to repo"
+  ],
+  "frameworks": {
+    "wm600x-sdk": {
+      "package": "framework-wm60x-sdk",
+      "script": "builder/frameworks/wm60x_sdk.py"
+    }
+  },
+  "packages": {
+    "toolchain-gccarmnoneeabi": {
+      "type": "toolchain",
+      "version": ">=1.60301.0,<1.80000.0"
+    },
+    "framework-wm60x-sdk": {
+      "type": "framework",
+      "optional": true,
+      "version": "~1.30200.0"
+    },
+    "tool-openocd-w60x": {
+      "type": "uploader",
+      "optional": true,
+      "version": "~1.1000.0"
+    },
+    "tool-jlink": {
+      "type": "uploader",
+      "optional": true,
+      "version": "^1.63208.0"
+    },
+    "tool-w60x-download": {
+      "type": "uploader",
+      "optional": true,
+      "version": "^1.10000.0"
+    },
+  }
+}
