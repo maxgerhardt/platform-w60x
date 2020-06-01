@@ -129,7 +129,7 @@ env.Replace(
         "-b", # source binary
         "$SOURCE",
         "-sb", # secboot 
-        "secboot.img", # is in same folder as tool
+        join(path_wm_tool, "secboot.img"), # is in same folder as tool
         "-fc",
         "compress",
         "-it", # image type
@@ -146,7 +146,7 @@ env.Replace(
 )
 
 create_images_action = env.VerboseAction("$WM_IMAGE_CMD", "Creating images from $SOURCE")
-AlwaysBuild(env.Alias("imaging", target_firm, create_images_action))
+AlwaysBuild(env.Alias("imaging", target_firm, [create_images_action]))
 
 
 #
@@ -225,16 +225,24 @@ elif upload_protocol == "serial":
     def __configure_upload_port(env):
         return env.subst("$UPLOAD_PORT")
 
+    # created by image targed
+    upload_source = join("$BUILD_DIR", "wm_w600.fls")
     env.Replace(
         __configure_upload_port=__configure_upload_port,
         UPLOADER=join(
             '"%s"' % platform.get_package_dir("tool-w60x-download") or "",
-            "download.py"),
+            "wm_tool"),
         UPLOADERFLAGS=[
-            "-g", board.get("upload.offset_address", "0x08000000"),
-            "-b", "115200", "-w"
+            "-ds", 
+            "1M" if is_1mb_version else "2M",
+            "-ua", # upload address
+            "90000" if is_1mb_version else "100000",
+            "-ws",  # serial speed
+            "$UPLOAD_SPEED",
+            "-rs", # reset method
+            "none"
         ],
-        UPLOADCMD='$UPLOADER $UPLOADERFLAGS "${__configure_upload_port(__env__)}" "$SOURCE"'
+        UPLOADCMD='$UPLOADER -c "${__configure_upload_port(__env__)}" $UPLOADERFLAGS -dl "$SOURCE"'
     )
 
     upload_actions = [

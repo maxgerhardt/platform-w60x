@@ -28,9 +28,9 @@
     "protocols": [
       "jlink",
       "stlink",
-      "blackmagic",
       "serial"
-    ]
+    ],
+    "speed": 115200
   },
   "url": "http://wizwiki.net/wiki/doku.php/products:wizfi360:board:wizfi360-evb-mini:start",
   "vendor": "ST"
