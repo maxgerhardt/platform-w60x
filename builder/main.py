@@ -145,8 +145,7 @@ env.Replace(
     WM_IMAGE_CMD="$WM_IMAGE_TOOL $WM_IMAGE_TOOL_FLAGS"
 )
 
-create_images_action = env.VerboseAction("$WM_IMAGE_CMD", "Creating images from $SOURCE")
-AlwaysBuild(env.Alias("imaging", target_firm, [create_images_action]))
+AlwaysBuild(env.Alias("imaging", target_firm, env.VerboseAction("$WM_IMAGE_CMD", "Creating images from $SOURCE")))
 
 
 #
@@ -229,9 +228,8 @@ elif upload_protocol == "serial":
     upload_source = join("$BUILD_DIR", "wm_w600.fls")
     env.Replace(
         __configure_upload_port=__configure_upload_port,
-        UPLOADER=join(
-            '"%s"' % platform.get_package_dir("tool-w60x-download") or "",
-            "wm_tool"),
+        UPLOADER=
+            '"%s"' % join(platform.get_package_dir("tool-w60x-download") or "", "wm_tool"),
         UPLOADERFLAGS=[
             "-ds", 
             "1M" if is_1mb_version else "2M",
@@ -262,7 +260,7 @@ elif upload_protocol in debug_tools:
     ])
     openocd_args = [
         f.replace("$PACKAGE_DIR",
-                  platform.get_package_dir("tool-openocd") or "")
+                  platform.get_package_dir("tool-openocd-w60x") or "")
         for f in openocd_args
     ]
     env.Replace(
