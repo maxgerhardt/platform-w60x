@@ -145,8 +145,8 @@ env.Replace(
     WM_IMAGE_CMD="$WM_IMAGE_TOOL $WM_IMAGE_TOOL_FLAGS"
 )
 
-AlwaysBuild(env.Alias("imaging", target_firm, env.VerboseAction("$WM_IMAGE_CMD", "Creating images from $SOURCE")))
-
+imaging_action = env.Alias("imaging", target_firm, env.VerboseAction("$WM_IMAGE_CMD", "Creating images from $SOURCE")) 
+AlwaysBuild(imaging_action)
 
 #
 # Target: Print binary size
@@ -290,7 +290,7 @@ if any("-Wl,-T" in f for f in env.get("LINKFLAGS", [])):
           "Please use 'board_build.ldscript' option in your 'platformio.ini' file.")
 
 #
-# Default targets
+# Default targets: Build, create compressed images, print size
 #
 
-Default([target_buildprog, target_size])
+Default([target_buildprog, imaging_action ,target_size])
