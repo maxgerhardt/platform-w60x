@@ -92,9 +92,9 @@ env.Append(
         "-fsigned-char",
         "-Wall",
         "-ggdb3",
-        "-nostdlib",
+#        "-nostdlib",
         "-fabi-version=0",
-        "-fno-builtin",
+#        "-fno-builtin",
         "--param", "max-inline-insns-single=500"
     ],
 
