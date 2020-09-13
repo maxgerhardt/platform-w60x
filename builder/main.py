@@ -15,7 +15,7 @@
 import sys
 from platform import system
 from os import makedirs
-from os.path import basename, isdir, join
+from os.path import basename, isdir, join, isfile
 
 from SCons.Script import (ARGUMENTS, COMMAND_LINE_TARGETS, AlwaysBuild,
                           Builder, Default, DefaultEnvironment)
@@ -146,6 +146,10 @@ env.Replace(
 )
 
 imaging_action = env.Alias("imaging", target_firm, env.VerboseAction("$WM_IMAGE_CMD", "Creating images from $SOURCE")) 
+# special case for upload: somehow the uploader doesn't trigger the "AlwaysBuild" options.
+# it still needs to know that if it wants the wm_w600.fls file, it needs to execute the imaging command
+env.Depends(join("$BUILD_DIR", "wm_w600.fls"), imaging_action)
+# always build during normal build
 AlwaysBuild(imaging_action)
 
 #
@@ -224,7 +228,7 @@ elif upload_protocol == "serial":
     def __configure_upload_port(env):
         return env.subst("$UPLOAD_PORT")
 
-    # created by image targed
+    # created by image target
     upload_source = join("$BUILD_DIR", "wm_w600.fls")
     env.Replace(
         __configure_upload_port=__configure_upload_port,
