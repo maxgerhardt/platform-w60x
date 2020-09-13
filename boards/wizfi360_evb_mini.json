@@ -4,7 +4,8 @@
     "extra_flags": "",
     "f_cpu": "80000000L",
     "mcu": "w600",
-    "ldscript": "link_w600_1m.ld"
+    "ldscript": "link_w600_1m.ld",
+	"variant": "generic"
   },
   "debug": {
     "default_tools": [
@@ -15,7 +16,8 @@
     "svd_path": "<none>"
   },
   "frameworks": [
-    "wm60x-sdk"
+    "wm60x-sdk",
+	"arduino"
   ],
   "name": "WizFi360-EVB-Mini",
   "upload": {
