@@ -38,18 +38,10 @@ def process_standard_library_configuration(cpp_defines):
     if "PIO_FRAMEWORK_ARDUINO_NANOLIB_FLOAT_SCANF" in cpp_defines:
         env.Append(LINKFLAGS=["-u_scanf_float"])
 
-# TODO: process switches for 
-# ifeq ($(COST_DOWN),1)
-# LIB_SRC += $(LIB_DIR)/wlan_costdown.a
-#else
-#LIB_SRC += $(LIB_DIR)/wlan.a
-#endif
-# and choice for LWIP_141 vs lwip2.0.3
-# COST_DOWN = 0
-#WPS_FEATURE = 1
-#IBSS_FEATURE = 1
-#AP_FEATURE = 1
-#LWIP_141 = 0
+# choice for LWIP_141 vs lwip2.0.3 is ommited.
+# other flags like COST_DOWN / TLS_COST_DOWN, 
+# which are present in the original makefiles,
+# are not processed in actual code. 
 
 def get_arm_math_lib(cpu):
     core = board.get("build.cpu")[7:9]
@@ -59,31 +51,6 @@ def get_arm_math_lib(cpu):
         return "arm_cortexM7lfsp_math"
 
     return "arm_cortex%sl_math" % core.upper()
-
-
-def configure_application_offset(mcu, upload_protocol):
-    offset = 0
-
-    # TODO deal with offsets in serial upload?
-    if upload_protocol == "dfu":
-        # STM32F103 series doesn't have embedded DFU over USB
-        # stm32duino bootloader (v1, v2) is used instead
-        if mcu.startswith("stm32f103"):
-            if board.get("upload.boot_version", 2) == 1:
-                offset = 0x5000
-            else:
-                offset = 0x2000
-            env.Append(CPPDEFINES=["BL_LEGACY_LEAF"])
-
-    if offset != 0:
-        env.Append(
-            CPPDEFINES=[("VECT_TAB_OFFSET", "%s" % hex(offset))],
-        )
-
-    # LD_FLASH_OFFSET is mandatory even if there is no offset
-    env.Append(
-        LINKFLAGS=["-Wl,--defsym=LD_FLASH_OFFSET=%s" % hex(offset)])
-
 
 env.Append(
     ASFLAGS=["-x", "assembler-with-cpp", "-mabi=aapcs", "-mthumb-interwork"],
@@ -215,13 +182,10 @@ env.Append(
     ],
 
     LIBPATH=[
-        # TODO add libs
         join(FRAMEWORK_DIR, "Lib", "GNU"),
         join(FRAMEWORK_DIR, "Src", "App","oneshotconfig", "lib_gcc")
     ]
 )
-
-configure_application_offset(mcu, upload_protocol)
 
 #
 # Linker requires preprocessing with correct RAM|ROM sizes
