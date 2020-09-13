@@ -1,0 +1,37 @@
+{
+  "build": {
+    "cpu": "cortex-m3",
+    "extra_flags": "-DW600_EV",
+    "f_cpu": "80000000L",
+    "mcu": "w600",
+    "ldscript": "link_w600_1m.ld",
+	"variant": "generic"
+  },
+  "debug": {
+    "default_tools": [
+      "stlink"
+    ],
+    "jlink_device": "W600",
+    "openocd_board": "w600",
+    "svd_path": "<none>"
+  },
+  "frameworks": [
+    "wm60x-sdk",
+	"arduino"
+  ],
+  "name": "Generic W600 board",
+  "upload": {
+    "maximum_ram_size": 229376,
+    "maximum_size": 1048576,
+    "protocol": "serial",
+	"resetmethod": "none",
+    "protocols": [
+      "jlink",
+      "stlink",
+      "serial"
+    ],
+    "speed": 1000000
+  },
+  "url": "http://www.winnermicro.com/en/html/1/156/158/497.html",
+  "vendor": "WinnerMicro"
+}

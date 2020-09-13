@@ -26,13 +26,9 @@ class W60xPlatform(PlatformBase):
                 "build.core", "arduino"))
 
         if "arduino" in variables.get("pioframework", []):
-            # todo adapt for coming arduino core
-            if build_core == "maple":
-                self.frameworks['arduino']['package'] = "framework-arduinoststm32-maple"
-                self.packages["framework-arduinoststm32-maple"]["optional"] = False
-                self.packages["framework-arduinoststm32"]["optional"] = True
-            else:
-                self.packages["toolchain-gccarmnoneeabi"]["version"] = "~1.90201.0"
+            self.packages["toolchain-gccarmnoneeabi"]["version"] = "~1.90201.0"
+            self.frameworks['arduino']['package'] = "framework-arduino-w60x"
+            self.frameworks['framework-arduino-w60x']['optional'] = False
 
         default_protocol = self.board_config(variables.get(
             "board")).get("upload.protocol") or ""

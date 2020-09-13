@@ -1,0 +1,37 @@
+{
+  "build": {
+    "cpu": "cortex-m3",
+    "extra_flags": "-DW600_EV",
+    "f_cpu": "80000000L",
+    "mcu": "w600",
+    "ldscript": "link_w600_1m.ld",
+	"variant": "tb_01"
+  },
+  "debug": {
+    "default_tools": [
+      "stlink"
+    ],
+    "jlink_device": "W600",
+    "openocd_board": "w600",
+    "svd_path": "<none>"
+  },
+  "frameworks": [
+    "wm60x-sdk",
+	"arduino"
+  ],
+  "name": "TB-01 board",
+  "upload": {
+    "maximum_ram_size": 229376,
+    "maximum_size": 1048576,
+    "protocol": "serial",
+	"resetmethod": "none",
+    "protocols": [
+      "jlink",
+      "stlink",
+      "serial"
+    ],
+    "speed": 1000000
+  },
+  "url": "https://github.com/w600/tb-01-devkit",
+  "vendor": "WinnerMicro"
+}
