@@ -22,6 +22,10 @@
     "wm60x-sdk": {
       "package": "framework-wm60x-sdk",
       "script": "builder/frameworks/wm60x_sdk.py"
+    },
+    "arduino": {
+      "package": "framework-arduino-w60x",
+      "script": "builder/frameworks/arduino.py"
     }
   },
   "packages": {
