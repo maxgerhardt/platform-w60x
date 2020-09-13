@@ -26,7 +26,12 @@ class W60xPlatform(PlatformBase):
                 "build.core", "arduino"))
 
         if "arduino" in variables.get("pioframework", []):
-            self.packages["toolchain-gccarmnoneeabi"]["version"] = "~1.90201.0"
+            # force older compiler; necessary for this arduino framework...
+            #self.packages["toolchain-gccarmnoneeabi"]["version"] = "~1.40804.0"
+            #self.packages["toolchain-gccarmnoneeabi"]["version"] = "~1.50401.0"
+            #self.packages["toolchain-gccarmnoneeabi"]["version"] = "~1.70201.0"
+            #self.packages["toolchain-gccarmnoneeabi"]["version"] = "~1.90201.0"
+            self.packages["toolchain-gccarmnoneeabi"]["version"] = "~1.40903.0"
             self.frameworks['arduino']['package'] = "framework-arduino-w60x"
             self.packages['framework-arduino-w60x']['optional'] = False
 
