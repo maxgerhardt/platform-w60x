@@ -22,13 +22,14 @@
     "maximum_ram_size": 229376,
     "maximum_size": 1048576,
     "protocol": "serial",
+	"resetmethod": "none",
     "protocols": [
       "jlink",
       "stlink",
       "serial"
     ],
-    "speed": 115200
+    "speed": 1000000
   },
   "url": "http://wizwiki.net/wiki/doku.php/products:wizfi360:board:wizfi360-evb-mini:start",
-  "vendor": "ST"
+  "vendor": "WinnerMicro"
 }
