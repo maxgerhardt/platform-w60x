@@ -41,7 +41,7 @@
     "framework-arduino-w60x": {
       "type": "framework",
       "optional": true,
-      "version": "~1.00207.0"
+      "version": "~1.207.0"
     },
     "tool-openocd-w60x": {
       "type": "uploader",

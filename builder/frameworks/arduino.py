@@ -54,6 +54,17 @@ def get_arm_math_lib(cpu):
 
     return "arm_cortex%sl_math" % core.upper()
 
+# this core is weird. it doesn't name its library files "libX.a" but just X.a. 
+# attempting to link it with the LIBS=.. option will fail. we have to do 
+# special linker flags with the "--whole-archive" thing.
+static_lib_files = [
+    "oneshot", "wmcmd", "wmcommon", "wmdhcpserver", "wmdnsserver", "wmdriver", "wmhttpclient", "wmlwip", "wmmain", 
+    "wmota", "wmntp", "wmping", "wmrtos", "wmssl", "wmweb", "wmwebsocket", "wmsslserver", "libairkiss_log", "wlan", "usermain", 
+]
+# we need absolute paths
+static_lib_files = [join(FRAMEWORK_DIR, "tools","sdk", "lib", file + ".a") for file in static_lib_files]
+linker_instruction = "-Wl,--whole-archive," + ",".join(static_lib_files) + ",--no-whole-archive" 
+
 env.Append(
     ASFLAGS=["-x", "assembler-with-cpp", "-mabi=aapcs", "-mthumb-interwork"],
 
@@ -80,16 +91,20 @@ env.Append(
         "-fmessage-length=0",
         "-fsigned-char",
         "-Wall",
-        "-ggdb3"
+        "-ggdb3",
         "-nostdlib",
-        "-fabi-version=0"
+        "-fabi-version=0",
         "-fno-builtin",
         "--param", "max-inline-insns-single=500"
     ],
 
     CPPDEFINES=[
         ("GCC_COMPILE", 1),
-        "_SYS_ERRNO_H_ "
+        "_SYS_ERRNO_H_ ",
+        "_IN_ADDR_T_DECLARED", # the SDK is written so poorly that it attempts to 
+        "__MACHINE_ENDIAN_H__", # redefine standard types. have to ignore compiler-builtins. 
+        "_TIMEVAL_DEFINED",
+        "__INSIDE_CYGWIN_NET__"
     ],
 
     CPPPATH=[
@@ -101,36 +116,36 @@ env.Append(
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "app"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "net"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "platform"),
-        join(FRAMEWORK_DIR, "tools", "sdk", "include", "lwip2.0.3", "include")
+        join(FRAMEWORK_DIR, "tools", "sdk", "include", "lwip2.0.3", "include"),
+        variant_dir
     ],
 
     LINKFLAGS=[
         "-Os",
         "-mthumb",
         "-mcpu=%s" % env.BoardConfig().get("build.cpu"),
-        "--specs=nano.specs",
+        "--specs=nosys.specs",
         "-Wl,--gc-sections,--relax",
         "-Wl,--check-sections",
-        "-Wl,--entry=Reset_Handler",
+#        "-Wl,--entry=Reset_Handler",
         "-Wl,--unresolved-symbols=report-all",
         "-Wl,--warn-common",
         "-Wl,--defsym=LD_MAX_SIZE=%d" % board.get("upload.maximum_size"),
         "-Wl,--defsym=LD_MAX_DATA_SIZE=%d" % board.get(
             "upload.maximum_ram_size"),
-        "-static",
-        "-nostartfiles"
+        linker_instruction
     ],
 
     LIBS=[
         #get_arm_math_lib(env.BoardConfig().get("build.cpu"))
-        "c", "m", "gcc", "stdc++",
-        "oneshot", "wmcmd", "wmcommon", "wmdhcpserver", "wmdnsserver", "wmdriver", "wmhttpclient", "wmlwip", "wmmain", 
-        "wmota", "wmntp", "wmping", "wmrtos", "wmssl", "wmweb", "wmwebsocket", "wmsslserver", "libairkiss_log", "wlan", "usermain", 
+        "c", "m", "gcc", "stdc++"
+        # handled by linker-unstruction, see above
+#        "oneshot", "wmcmd", "wmcommon", "wmdhcpserver", "wmdnsserver", "wmdriver", "wmhttpclient", "wmlwip", "wmmain", 
+#        "wmota", "wmntp", "wmping", "wmrtos", "wmssl", "wmweb", "wmwebsocket", "wmsslserver", "libairkiss_log", "wlan", "usermain", 
     ],
 
     LIBPATH=[
-        join(FRAMEWORK_DIR, "tools", "sdk", "lib"),
-        join(FRAMEWORK_DIR, "Src", "App","oneshotconfig", "lib_gcc")
+        join(FRAMEWORK_DIR, "tools", "sdk", "lib")
     ]
 )
 
@@ -138,9 +153,8 @@ env.Append(
 # Linker requires preprocessing with correct RAM|ROM sizes
 #
 
-if not board.get("build.ldscript", ""):
-    print("Warning! Cannot find linker script for the current target!\n")
-    env.Replace(LDSCRIPT_PATH=join(FRAMEWORK_DIR, "tools", "sdk", "ld", "link_w600.ld"))
+# ignore board buildscript, this arduino core knows only one linker script
+env.Replace(LDSCRIPT_PATH=join(FRAMEWORK_DIR, "tools", "sdk", "ld", "link_w600.ld"))
 
 #
 # Process configuration flags

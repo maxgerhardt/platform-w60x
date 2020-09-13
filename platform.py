@@ -28,7 +28,7 @@ class W60xPlatform(PlatformBase):
         if "arduino" in variables.get("pioframework", []):
             self.packages["toolchain-gccarmnoneeabi"]["version"] = "~1.90201.0"
             self.frameworks['arduino']['package'] = "framework-arduino-w60x"
-            self.frameworks['framework-arduino-w60x']['optional'] = False
+            self.packages['framework-arduino-w60x']['optional'] = False
 
         default_protocol = self.board_config(variables.get(
             "board")).get("upload.protocol") or ""
