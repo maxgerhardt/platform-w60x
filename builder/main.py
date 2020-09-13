@@ -235,14 +235,16 @@ elif upload_protocol == "serial":
         UPLOADER=
             '"%s"' % join(platform.get_package_dir("tool-w60x-download") or "", "wm_tool"),
         UPLOADERFLAGS=[
-            "-ds", 
+            "-ds", # download speed
+            "$UPLOAD_SPEED",
+            "-it", # image type
             "1M" if is_1mb_version else "2M",
             "-ua", # upload address
             "90000" if is_1mb_version else "100000",
-            "-ws",  # serial speed
+            "-ws",  # work speed (non-download)
             "$UPLOAD_SPEED",
-            "-rs", # reset method
-            "none"
+            "-rs", # reset method. "none"/"at"/"rts"
+            board.get("upload.resetmethod", "none")
         ],
         UPLOADCMD='$UPLOADER -c "${__configure_upload_port(__env__)}" $UPLOADERFLAGS -dl "$SOURCE"'
     )
