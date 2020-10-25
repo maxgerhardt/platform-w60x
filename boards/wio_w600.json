@@ -12,7 +12,7 @@
       "stlink"
     ],
     "jlink_device": "W600",
-    "openocd_board": "w600",
+    "openocd_target": "w600",
     "svd_path": "<none>"
   },
   "frameworks": [

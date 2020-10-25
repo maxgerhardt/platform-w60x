@@ -12,19 +12,20 @@
       "stlink"
     ],
     "jlink_device": "W600",
-    "openocd_board": "w600",
+    "openocd_board": "w600_stlink",
     "svd_path": "<none>"
   },
   "frameworks": [
     "wm60x-sdk",
-	"arduino"
+    "arduino"
   ],
   "name": "WizFi360-EVB-Mini",
   "upload": {
     "maximum_ram_size": 229376,
     "maximum_size": 1048576,
     "protocol": "serial",
-	"resetmethod": "none",
+    "resetmethod": "none",
+    "offset_address": "0x8010000",
     "protocols": [
       "jlink",
       "stlink",
