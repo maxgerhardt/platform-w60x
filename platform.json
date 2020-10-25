@@ -12,12 +12,7 @@
     "type": "git",
     "url": "https://github.com/maxgerhardt/platform-w60x"
   },
-  "version": "6.1.0",
-  "packageRepositories": [
-    "https://dl.bintray.com/platformio/dl-packages/manifest.json",
-    "http://dl.platformio.org/packages/manifest.json",
-    "https://raw.githubusercontent.com/maxgerhardt/platform-w60x/master/manifest.json"
-  ],
+  "version": "6.1.1",
   "frameworks": {
     "wm60x-sdk": {
       "package": "framework-wm60x-sdk",
@@ -31,22 +26,26 @@
   "packages": {
     "toolchain-gccarmnoneeabi": {
       "type": "toolchain",
-      "version": ">=1.60301.0,<1.80000.0"
+      "version": ">=1.60301.0,<1.80000.0",
+      "owner": "platformio"
     },
     "framework-wm60x-sdk": {
       "type": "framework",
       "optional": true,
-      "version": "~1.30400.0"
+      "version": "~1.30400.0",
+      "owner": "maxgerhardt"
     },
     "framework-arduino-w60x": {
       "type": "framework",
       "optional": true,
-      "version": "~1.207.0"
+      "version": "~1.207.0",
+      "owner": "maxgerhardt"
     },
     "tool-openocd-w60x": {
       "type": "uploader",
       "optional": true,
-      "version": "~1.1000.0"
+      "version": "~1.1000.0",
+      "owner": "maxgerhardt"
     },
     "tool-jlink": {
       "type": "uploader",
@@ -56,7 +55,8 @@
     "tool-w60x-download": {
       "type": "uploader",
       "optional": false,
-      "version": "^1.10000.0"
+      "version": "^1.10000.0",
+      "owner": "maxgerhardt"
     }
   }
 }

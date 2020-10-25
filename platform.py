@@ -122,7 +122,7 @@ class W60xPlatform(PlatformBase):
 
                 debug['tools'][link] = {
                     "server": {
-                        "package": "tool-openocd",
+                        "package": "tool-openocd-w60x",
                         "executable": "bin/openocd",
                         "arguments": server_args
                     }

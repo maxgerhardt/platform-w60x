@@ -261,8 +261,9 @@ elif upload_protocol in debug_tools:
     openocd_args.extend(
         debug_tools.get(upload_protocol).get("server").get("arguments", []))
     openocd_args.extend([
-        "-c", "program {$SOURCE} %s verify reset; shutdown;" %
-        board.get("upload.offset_address", "")
+        "-c" "reset_config none_separate",
+        "-c", "program {$BUILD_DIR/wm_w600_dbg.img} 0x8010000 verify reset; shutdown;"# %
+        #board.get("upload.offset_address", "")
     ])
     openocd_args = [
         f.replace("$PACKAGE_DIR",
@@ -274,8 +275,7 @@ elif upload_protocol in debug_tools:
         UPLOADERFLAGS=openocd_args,
         UPLOADCMD="$UPLOADER $UPLOADERFLAGS")
 
-    if not board.get("upload").get("offset_address"):
-        upload_source = target_elf
+    upload_source = join("$BUILD_DIR", "wm_w600_dbg.img")
     upload_actions = [env.VerboseAction("$UPLOADCMD", "Uploading $SOURCE")]
 
 # custom upload tool
